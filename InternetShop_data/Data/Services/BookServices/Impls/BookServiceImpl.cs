@@ -1,5 +1,7 @@
-﻿using InternetShop_data.Data.Entities;
+﻿using InternetShop_data.Data.DTO;
+using InternetShop_data.Data.Entities;
 using InternetShop_data.Data.UnitOfWork;
+using System.Transactions;
 
 namespace InternetShop_data.Data.Services.BookServices.Impls
 {
@@ -40,6 +42,50 @@ namespace InternetShop_data.Data.Services.BookServices.Impls
         public Book GetByIdAsync(int id)
         {
             return _unitOfWork._BookRepository.GetByIdAsync(id).Result;
+        }
+
+        public bool ProcessBookDTO(BookDTO book)
+        {
+            try
+            {
+                using (var transactionScope = new TransactionScope())
+                {
+                    int newBookId = _unitOfWork._BookRepository.CreateAsync(
+                        new Book
+                        {
+                            Count = book.Count,
+                            Id = 0,
+                            Name = book.Name,
+                            Price = book.Price,
+                            PublishingHouse = book.PublishingHouse
+                        }).Result.Id;
+
+                    book.Categories.ForEach(categoryId => 
+                    {
+                            _unitOfWork._CategoryRepository.BindBookWithCategory(
+                                    _bookId: newBookId,
+                                    _categoryId: categoryId
+                                    );
+                    });
+
+                    book.Authors.ForEach(authorId =>
+                    {
+                        _unitOfWork._AuthorRepository.BindBookWithAuthor(
+                                _bookId: newBookId,
+                                _authorId: authorId
+                                );
+                    });
+
+
+                    transactionScope.Complete();
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public Book UpdateAsync(Book entity)

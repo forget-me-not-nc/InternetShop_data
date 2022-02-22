@@ -1,4 +1,5 @@
-﻿using InternetShop_data.Data.Entities;
+﻿using InternetShop_data.Data.DTO;
+using InternetShop_data.Data.Entities;
 using InternetShop_data.Data.Repositories.BookRepo;
 using InternetShop_data.Data.Services.BookServices;
 using InternetShop_data.Data.UnitOfWork;
@@ -110,6 +111,23 @@ namespace InternetShop_data.Data.Controllers
             {
                 return Ok(_bookService.GetBooksByAuthor(id));
 
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("detailedCreate")]
+        public ActionResult<bool> DetailedCreate([FromBody] BookDTO newBook)
+        {
+            try
+            {
+                if (newBook == null) throw new ArgumentNullException("Empty body!");
+
+                if (!ModelState.IsValid) throw new InvalidOperationException("Invalid body!");
+
+                return Ok(_bookService.ProcessBookDTO(newBook));
             }
             catch (Exception ex)
             {

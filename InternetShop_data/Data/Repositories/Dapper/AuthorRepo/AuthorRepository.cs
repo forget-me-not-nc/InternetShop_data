@@ -1,4 +1,5 @@
-﻿using InternetShop_data.Data.Entities;
+﻿using Dapper;
+using InternetShop_data.Data.Entities;
 using InternetShop_data.Data.Settings;
 using MySql.Data.MySqlClient;
 using System.Data;
@@ -68,6 +69,28 @@ namespace InternetShop_data.Data.Repositories.AuthorRepo
             catch (Exception ex)
             {
                 throw new Exception("ERROR: ADOUpdateAsync.", ex);
+            }
+            finally
+            {
+                ConnectionClose();
+            }
+        }
+
+        public async Task<bool> BindBookWithAuthor(int _bookId, int _authorId)
+        {
+            try
+            {
+                ConnectionOpen();
+
+                return Convert.ToBoolean(await _dbConnection.ExecuteScalarAsync<int>(
+                                sql: "INSERT INTO bookauthor (BookId, AuthorId) VALUES (@BookId,@AuthorId)",
+                                param: new { BookId = _bookId, AuthorId = _authorId }
+                            )
+                        );
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("ERROR: Failed to Bind book with author.", ex);
             }
             finally
             {

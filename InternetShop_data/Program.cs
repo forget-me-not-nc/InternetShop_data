@@ -31,8 +31,8 @@ builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 
 //services
 builder.Services.AddScoped<ICategoryService, CategoryServiceImpl>();
-builder.Services.AddScoped<IBookService, BookServiceImpl>();
 builder.Services.AddScoped<IAuthorService, AuthorServiceImpl>();
+builder.Services.AddScoped<IBookService, BookServiceImpl>();
 
 //unit of work
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
