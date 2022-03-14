@@ -13,5 +13,7 @@ namespace InternetShop_data.Data.Services.BookServices
         IEnumerable<Book> GetBooksByCategory(int id);
         IEnumerable<Book> GetBooksByAuthor(int id);
         bool ProcessBookDTO(BookDTO book);
+        IEnumerable<Author> GetBookAuthors(int id);
+        IEnumerable<Category> GetBookCategories(int id);
     }
 }

@@ -29,6 +29,16 @@ namespace InternetShop_data.Data.Services.BookServices.Impls
             return _unitOfWork._BookRepository.GetAllAsync().Result;
         }
 
+        public IEnumerable<Author> GetBookAuthors(int id)
+        {
+            return _unitOfWork._BookRepository.GetBookAuthors(id).Result;
+        }
+
+        public IEnumerable<Category> GetBookCategories(int id)
+        {
+            return _unitOfWork._BookRepository.GetBookCategories(id).Result;
+        }
+
         public IEnumerable<Book> GetBooksByAuthor(int id)
         {
             return _unitOfWork._BookRepository.GetBooksByAuthor(id).Result;

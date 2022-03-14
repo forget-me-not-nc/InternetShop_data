@@ -134,5 +134,32 @@ namespace InternetShop_data.Data.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("get/{id}/categories")]
+        public ActionResult<Book> GetBookCategories(int id)
+        {
+            try
+            {
+                return Ok(_bookService.GetBookCategories(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet("get/{id}/authors")]
+        public ActionResult<Book> GetBookAuthors(int id)
+        {
+            try
+            {
+                return Ok(_bookService.GetBookAuthors(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
