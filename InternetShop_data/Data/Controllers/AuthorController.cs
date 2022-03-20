@@ -16,7 +16,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpGet("getAll")]
-        public ActionResult<Author> GetAllBooks()
+        public ActionResult<Author> GetAllAuthors()
         {
             try
             {
