@@ -8,5 +8,7 @@
         public int Count { get; set; }
         public List<int> Categories { get; set; }
         public List<int> Authors { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

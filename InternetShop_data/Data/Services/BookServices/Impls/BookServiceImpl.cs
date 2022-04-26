@@ -14,78 +14,84 @@ namespace InternetShop_data.Data.Services.BookServices.Impls
             _unitOfWork = unitOfWork;
         }
 
-        public Book CreateAsync(Book entity)
+        public async Task<Book> CreateAsync(Book entity)
         {
-            return _unitOfWork._BookRepository.CreateAsync(entity).Result;
+            return await _unitOfWork._BookRepository.CreateAsync(entity);
         }
 
-        public bool DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            return _unitOfWork._BookRepository.DeleteAsync(id).Result;
+            var book = await _unitOfWork._BookRepository.GetByIdAsync(id);
+
+            book.IsDeleted = true;
+
+            await _unitOfWork._BookRepository.UpdateAsync(book);
+
+            return true;
         }
 
-        public IEnumerable<Book> GetAllAsync()
+        public async Task<IEnumerable<Book>> GetAllAsync()
         {
-            return _unitOfWork._BookRepository.GetAllAsync().Result;
+            return await _unitOfWork._BookRepository.GetAllAsync();
         }
 
-        public IEnumerable<Author> GetBookAuthors(int id)
+        public async Task<IEnumerable<Author>> GetBookAuthors(int id)
         {
-            return _unitOfWork._BookRepository.GetBookAuthors(id).Result;
+            return await _unitOfWork._BookRepository.GetBookAuthors(id);
         }
 
-        public IEnumerable<Category> GetBookCategories(int id)
+        public async Task<IEnumerable<Category>> GetBookCategories(int id)
         {
-            return _unitOfWork._BookRepository.GetBookCategories(id).Result;
+            return await _unitOfWork._BookRepository.GetBookCategories(id);
         }
 
-        public IEnumerable<Book> GetBooksByAuthor(int id)
+        public async Task<IEnumerable<Book>> GetBooksByAuthor(int id)
         {
-            return _unitOfWork._BookRepository.GetBooksByAuthor(id).Result;
+            return await _unitOfWork._BookRepository.GetBooksByAuthor(id);
         }
 
-        public IEnumerable<Book> GetBooksByCategory(int id)
+        public async Task<IEnumerable<Book>> GetBooksByCategory(int id)
         {
-            return _unitOfWork._BookRepository.GetBooksByCategory(id).Result;
+            return await _unitOfWork._BookRepository.GetBooksByCategory(id);
         }
 
-        public Book GetByIdAsync(int id)
+        public async Task<Book> GetByIdAsync(int id)
         {
-            return _unitOfWork._BookRepository.GetByIdAsync(id).Result;
+            return await _unitOfWork._BookRepository.GetByIdAsync(id);
         }
 
-        public bool ProcessBookDTO(BookDTO book)
+        public async Task<bool> ProcessBookDTO(BookDTO book)
         {
             try
             {
                 using (var transactionScope = new TransactionScope())
                 {
-                    int newBookId = _unitOfWork._BookRepository.CreateAsync(
+                    int newBookId = (await _unitOfWork._BookRepository.CreateAsync(
                         new Book
                         {
                             Count = book.Count,
                             Id = 0,
                             Name = book.Name,
                             Price = book.Price,
-                            PublishingHouse = book.PublishingHouse
-                        }).Result.Id;
+                            PublishingHouse = book.PublishingHouse,
+                            IsDeleted = book.IsDeleted,
+                        })).Id;
 
-                    book.Categories.ForEach(categoryId => 
+                    book.Categories.ForEach(async categoryId => 
                     {
-                            _unitOfWork._CategoryRepository.BindBookWithCategory(
+                            await _unitOfWork._CategoryRepository.BindBookWithCategory(
                                     _bookId: newBookId,
                                     _categoryId: categoryId
                                     );
                     });
 
-                    book.Authors.ForEach(authorId =>
+                    book.Authors.ForEach(async authorId =>
                     {
-                        _unitOfWork._AuthorRepository.BindBookWithAuthor(
+                        await _unitOfWork._AuthorRepository.BindBookWithAuthor(
                                 _bookId: newBookId,
                                 _authorId: authorId
                                 );
                     });
-
 
                     transactionScope.Complete();
                 }
@@ -98,9 +104,9 @@ namespace InternetShop_data.Data.Services.BookServices.Impls
             }
         }
 
-        public Book UpdateAsync(Book entity)
+        public async Task<Book> UpdateAsync(Book entity)
         {
-            return _unitOfWork._BookRepository.UpdateAsync(entity).Result;
+            return await _unitOfWork._BookRepository.UpdateAsync(entity);
         }
     }
 }

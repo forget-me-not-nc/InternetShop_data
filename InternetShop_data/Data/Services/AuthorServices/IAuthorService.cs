@@ -4,10 +4,10 @@ namespace InternetShop_data.Data.Services.AuthorServices
 {
     public interface IAuthorService
     {
-        IEnumerable<Author> GetAllAsync();
-        Author GetByIdAsync(int id);
-        Author CreateAsync(Author entity);
-        Author UpdateAsync(Author entity);
-        bool DeleteAsync(int id);
+        Task<IEnumerable<Author>> GetAllAsync();
+        Task<Author> GetByIdAsync(int id);
+        Task<Author> CreateAsync(Author entity);
+        Task<Author> UpdateAsync(Author entity);
+        Task<bool> DeleteAsync(int id);
     }
 }

@@ -16,11 +16,11 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpGet("getAll")]
-        public ActionResult<Author> GetAllAuthors()
+        public async Task<ActionResult<Author>> GetAllAuthors()
         {
             try
             {
-                return Ok(_authorService.GetAllAsync());
+                return Ok(await _authorService.GetAllAsync());
             }
             catch (Exception ex)
             {
@@ -29,11 +29,11 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpGet("get/{id}")]
-        public ActionResult<Author> GetById(int id)
+        public async Task<ActionResult<Author>> GetById(int id)
         {
             try
             {
-                return Ok(_authorService.GetByIdAsync(id));
+                return Ok(await _authorService.GetByIdAsync(id));
             }
             catch (Exception ex)
             {
@@ -42,7 +42,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpPost("create")]
-        public ActionResult<Author> Create([FromBody] Author newAuthor)
+        public async Task<ActionResult<Author>> Create([FromBody] Author newAuthor)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace InternetShop_data.Data.Controllers
 
                 if (!ModelState.IsValid) throw new InvalidOperationException("Invalid body!");
 
-                return Ok(_authorService.CreateAsync(newAuthor));
+                return Ok(await _authorService.CreateAsync(newAuthor));
             }
             catch (Exception ex)
             {
@@ -59,11 +59,11 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        public ActionResult<bool> Delete(int id)
+        public async Task<ActionResult<bool>> Delete(int id)
         {
             try
             {
-                return Ok(_authorService.DeleteAsync(id));
+                return Ok(await _authorService.DeleteAsync(id));
             }
             catch (Exception ex)
             {
@@ -72,7 +72,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpPut("update")]
-        public ActionResult<Author> Update([FromBody] Author updatedAuthor)
+        public async Task<ActionResult<Author>> Update([FromBody] Author updatedAuthor)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace InternetShop_data.Data.Controllers
 
                 if (!ModelState.IsValid) throw new InvalidOperationException("Invalid body!");
 
-                return Ok(_authorService.UpdateAsync(updatedAuthor));
+                return Ok(await _authorService.UpdateAsync(updatedAuthor));
             }
             catch (Exception ex)
             {

@@ -12,29 +12,29 @@ namespace InternetShop_data.Data.Services.AuthorServices.Impls
             _unitOfWork = unitOfWork;
         }
 
-        public Author CreateAsync(Author entity)
+        public async Task<Author> CreateAsync(Author entity)
         {
-            return _unitOfWork._AuthorRepository.CreateAsync(entity).Result;
+            return await _unitOfWork._AuthorRepository.CreateAsync(entity);
         }
 
-        public bool DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            return _unitOfWork._AuthorRepository.DeleteAsync(id).Result;
+            return await _unitOfWork._AuthorRepository.DeleteAsync(id);
         }
 
-        public IEnumerable<Author> GetAllAsync()
+        public async Task<IEnumerable<Author>> GetAllAsync()
         {
-            return _unitOfWork._AuthorRepository.GetAllAsync().Result;
+            return await _unitOfWork._AuthorRepository.GetAllAsync();
         }
 
-        public Author GetByIdAsync(int id)
+        public async Task<Author> GetByIdAsync(int id)
         {
-            return _unitOfWork._AuthorRepository.GetByIdAsync(id).Result;
+            return await _unitOfWork._AuthorRepository.GetByIdAsync(id);
         }
 
-        public Author UpdateAsync(Author entity)
+        public async Task<Author> UpdateAsync(Author entity)
         {
-            return _unitOfWork._AuthorRepository.UpdateAsync(entity).Result;
+            return await _unitOfWork._AuthorRepository.UpdateAsync(entity);
         }
     }
 }

@@ -19,11 +19,11 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpGet("getAll")]
-        public ActionResult<Book> GetAllBooks()
+        public async Task<ActionResult<Book>> GetAllBooks()
         {
             try
             {
-                return Ok(_bookService.GetAllAsync());
+                return Ok(await _bookService.GetAllAsync());
             }
             catch (Exception ex)
             {
@@ -32,11 +32,11 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpGet("get/{id}")]
-        public ActionResult<Book> GetById(int id)
+        public async Task<ActionResult<Book>> GetById(int id)
         {
             try
             {
-                return Ok(_bookService.GetByIdAsync(id));
+                return Ok(await _bookService.GetByIdAsync(id));
             }
             catch(Exception ex)
             {
@@ -45,7 +45,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpPost("create")]
-        public ActionResult<Book> Create([FromBody] Book newBook)
+        public async Task<ActionResult<Book>> Create([FromBody] Book newBook)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace InternetShop_data.Data.Controllers
 
                 if (!ModelState.IsValid) throw new InvalidOperationException("Invalid body!");
                 
-                return Ok(_bookService.CreateAsync(newBook));
+                return Ok(await _bookService.CreateAsync(newBook));
             }
             catch (Exception ex)
             {
@@ -62,11 +62,11 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        public ActionResult<bool> Delete(int id)
+        public async Task<ActionResult<bool>> Delete(int id)
         {
             try
             {
-                return Ok(_bookService.DeleteAsync(id));
+                return Ok(await _bookService.DeleteAsync(id));
             }
             catch (Exception ex)
             {
@@ -75,7 +75,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpPut("update")]
-        public ActionResult<Book> Update([FromBody] Book updatedBook)
+        public async Task<ActionResult<Book>> Update([FromBody] Book updatedBook)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace InternetShop_data.Data.Controllers
 
                 if (!ModelState.IsValid) throw new InvalidOperationException("Invalid body!");
 
-                return Ok(_bookService.UpdateAsync(updatedBook));
+                return Ok(await _bookService.UpdateAsync(updatedBook));
             }
             catch (Exception ex)
             {
@@ -92,11 +92,11 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpGet("category/{id}")]
-        public ActionResult<IEnumerable<Book>> getBookByCategory(int id)
+        public async Task<ActionResult<IEnumerable<Book>>> getBookByCategory(int id)
         {
             try
             {
-                return Ok(_bookService.GetBooksByCategory(id));
+                return Ok(await _bookService.GetBooksByCategory(id));
             }
             catch (Exception ex)
             {
@@ -105,11 +105,11 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpGet("author/{id}")]
-        public ActionResult<IEnumerable<Book>> getBookByAuthor(int id)
+        public async Task<ActionResult<IEnumerable<Book>>> getBookByAuthor(int id)
         {
             try
             {
-                return Ok(_bookService.GetBooksByAuthor(id));
+                return Ok(await _bookService.GetBooksByAuthor(id));
 
             }
             catch (Exception ex)
@@ -119,7 +119,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpPost("detailedCreate")]
-        public ActionResult<bool> DetailedCreate([FromBody] BookDTO newBook)
+        public async Task<ActionResult<bool>> DetailedCreate([FromBody] BookDTO newBook)
         {
             try
             {
@@ -127,7 +127,7 @@ namespace InternetShop_data.Data.Controllers
 
                 if (!ModelState.IsValid) throw new InvalidOperationException("Invalid body!");
 
-                return Ok(_bookService.ProcessBookDTO(newBook));
+                return Ok(await _bookService.ProcessBookDTO(newBook));
             }
             catch (Exception ex)
             {
@@ -136,11 +136,11 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpGet("get/{id}/categories")]
-        public ActionResult<Book> GetBookCategories(int id)
+        public async Task<ActionResult<Book>> GetBookCategories(int id)
         {
             try
             {
-                return Ok(_bookService.GetBookCategories(id));
+                return Ok(await _bookService.GetBookCategories(id));
             }
             catch (Exception ex)
             {
@@ -150,11 +150,11 @@ namespace InternetShop_data.Data.Controllers
 
 
         [HttpGet("get/{id}/authors")]
-        public ActionResult<Book> GetBookAuthors(int id)
+        public async Task<ActionResult<Book>> GetBookAuthors(int id)
         {
             try
             {
-                return Ok(_bookService.GetBookAuthors(id));
+                return Ok(await _bookService.GetBookAuthors(id));
             }
             catch (Exception ex)
             {

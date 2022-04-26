@@ -16,11 +16,11 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpGet("getAll")]
-        public ActionResult<Category> GetAllCategories()
+        public async Task<ActionResult<Category>> GetAllCategories()
         {
             try
             {
-                return Ok(_categoryService.GetAllAsync());
+                return Ok(await _categoryService.GetAllAsync());
             }
             catch (Exception ex)
             {
@@ -29,11 +29,11 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpGet("get/{id}")]
-        public ActionResult<Category> GetById(int id)
+        public async Task<ActionResult<Category>> GetById(int id)
         {
             try
             {
-                return Ok(_categoryService.GetByIdAsync(id));
+                return Ok(await _categoryService.GetByIdAsync(id));
             }
             catch (Exception ex)
             {
@@ -42,7 +42,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpPost("create")]
-        public ActionResult<Category> Create([FromBody] Category newCategory)
+        public async Task<ActionResult<Category>> Create([FromBody] Category newCategory)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace InternetShop_data.Data.Controllers
 
                 if (!ModelState.IsValid) throw new InvalidOperationException("Invalid body!");
 
-                return Ok(_categoryService.CreateAsync(newCategory));
+                return Ok(await _categoryService.CreateAsync(newCategory));
             }
             catch (Exception ex)
             {
@@ -59,11 +59,11 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        public ActionResult<bool> Delete(int id)
+        public async Task<ActionResult<bool>> Delete(int id)
         {
             try
             {
-                return Ok(_categoryService.DeleteAsync(id));
+                return Ok(await _categoryService.DeleteAsync(id));
             }
             catch (Exception ex)
             {
@@ -72,7 +72,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpPut("update")]
-        public ActionResult<Category> Update([FromBody] Category updatedCategory)
+        public async Task<ActionResult<Category>> Update([FromBody] Category updatedCategory)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace InternetShop_data.Data.Controllers
 
                 if (!ModelState.IsValid) throw new InvalidOperationException("Invalid body!");
 
-                return Ok(_categoryService.UpdateAsync(updatedCategory));
+                return Ok(await _categoryService.UpdateAsync(updatedCategory));
             }
             catch (Exception ex)
             {

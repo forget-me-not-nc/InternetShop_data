@@ -4,10 +4,10 @@ namespace InternetShop_data.Data.Services.CategoryServices
 {
     public interface ICategoryService
     {
-        IEnumerable<Category> GetAllAsync();
-        Category GetByIdAsync(int id);
-        Category CreateAsync(Category entity);
-        Category UpdateAsync(Category entity);
-        bool DeleteAsync(int id);
+        Task<IEnumerable<Category>> GetAllAsync();
+        Task<Category> GetByIdAsync(int id);
+        Task<Category> CreateAsync(Category entity);
+        Task<Category> UpdateAsync(Category entity);
+        Task<bool> DeleteAsync(int id);
     }
 }

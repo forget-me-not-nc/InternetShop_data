@@ -9,5 +9,6 @@ namespace InternetShop_data.Data.Entities
         public string Name { get; set; }
         public string PublishingHouse { get; set; }
         public int Count { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

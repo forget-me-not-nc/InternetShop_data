@@ -11,29 +11,29 @@ namespace InternetShop_data.Data.Services.CategoryServices.Impls
         {
             _unitOfWork = unitOfWork;
         }
-        public Category CreateAsync(Category entity)
+        public async Task<Category> CreateAsync(Category entity)
         {
-            return _unitOfWork._CategoryRepository.CreateAsync(entity).Result;   
+            return await _unitOfWork._CategoryRepository.CreateAsync(entity);   
         }
 
-        public bool DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            return _unitOfWork._CategoryRepository.DeleteAsync(id).Result;
+            return await _unitOfWork._CategoryRepository.DeleteAsync(id);
         }
 
-        public IEnumerable<Category> GetAllAsync()
+        public async Task<IEnumerable<Category>> GetAllAsync()
         {
-            return _unitOfWork._CategoryRepository.GetAllAsync().Result;
+            return await _unitOfWork._CategoryRepository.GetAllAsync();
         }
 
-        public Category GetByIdAsync(int id)
+        public async Task<Category> GetByIdAsync(int id)
         {
-            return _unitOfWork._CategoryRepository.GetByIdAsync(id).Result;
+            return await _unitOfWork._CategoryRepository.GetByIdAsync(id);
         }
 
-        public Category UpdateAsync(Category entity)
+        public async Task<Category> UpdateAsync(Category entity)
         {
-            return _unitOfWork._CategoryRepository.UpdateAsync(entity).Result;
+            return await _unitOfWork._CategoryRepository.UpdateAsync(entity);
         }
     }
 }
