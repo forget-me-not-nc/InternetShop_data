@@ -15,7 +15,7 @@ namespace InternetShop_data.Data.Controllers
             _categoryService = categoryService;
         }
 
-        [HttpGet("getAll")]
+        [HttpGet]
         public async Task<ActionResult<Category>> GetAllCategories()
         {
             try
@@ -28,7 +28,7 @@ namespace InternetShop_data.Data.Controllers
             }
         }
 
-        [HttpGet("get/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetById(int id)
         {
             try
@@ -41,7 +41,7 @@ namespace InternetShop_data.Data.Controllers
             }
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<ActionResult<Category>> Create([FromBody] Category newCategory)
         {
             try
@@ -58,7 +58,7 @@ namespace InternetShop_data.Data.Controllers
             }
         }
 
-        [HttpDelete("delete/{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> Delete(int id)
         {
             try
@@ -71,7 +71,7 @@ namespace InternetShop_data.Data.Controllers
             }
         }
 
-        [HttpPut("update")]
+        [HttpPut]
         public async Task<ActionResult<Category>> Update([FromBody] Category updatedCategory)
         {
             try

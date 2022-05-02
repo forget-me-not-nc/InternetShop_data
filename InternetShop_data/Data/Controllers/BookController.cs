@@ -18,7 +18,7 @@ namespace InternetShop_data.Data.Controllers
             _bookService = bookService;
         }
 
-        [HttpGet("getAll")]
+        [HttpGet]
         public async Task<ActionResult<Book>> GetAllBooks()
         {
             try
@@ -31,7 +31,7 @@ namespace InternetShop_data.Data.Controllers
             }
         }
 
-        [HttpGet("get/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetById(int id)
         {
             try
@@ -44,7 +44,7 @@ namespace InternetShop_data.Data.Controllers
             }
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<ActionResult<Book>> Create([FromBody] Book newBook)
         {
             try
@@ -61,7 +61,7 @@ namespace InternetShop_data.Data.Controllers
             }
         }
 
-        [HttpDelete("delete/{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> Delete(int id)
         {
             try
@@ -74,7 +74,7 @@ namespace InternetShop_data.Data.Controllers
             }
         }
 
-        [HttpPut("update")]
+        [HttpPut]
         public async Task<ActionResult<Book>> Update([FromBody] Book updatedBook)
         {
             try
@@ -135,7 +135,7 @@ namespace InternetShop_data.Data.Controllers
             }
         }
 
-        [HttpGet("get/{id}/categories")]
+        [HttpGet("{id}/categories")]
         public async Task<ActionResult<Book>> GetBookCategories(int id)
         {
             try
@@ -149,7 +149,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
 
-        [HttpGet("get/{id}/authors")]
+        [HttpGet("{id}/authors")]
         public async Task<ActionResult<Book>> GetBookAuthors(int id)
         {
             try

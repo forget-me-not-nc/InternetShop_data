@@ -15,7 +15,7 @@ namespace InternetShop_data.Data.Controllers
             _authorService = authorService;
         }
 
-        [HttpGet("getAll")]
+        [HttpGet]
         public async Task<ActionResult<Author>> GetAllAuthors()
         {
             try
@@ -28,7 +28,7 @@ namespace InternetShop_data.Data.Controllers
             }
         }
 
-        [HttpGet("get/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Author>> GetById(int id)
         {
             try
@@ -41,7 +41,7 @@ namespace InternetShop_data.Data.Controllers
             }
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<ActionResult<Author>> Create([FromBody] Author newAuthor)
         {
             try
@@ -58,7 +58,7 @@ namespace InternetShop_data.Data.Controllers
             }
         }
 
-        [HttpDelete("delete/{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> Delete(int id)
         {
             try
@@ -71,7 +71,7 @@ namespace InternetShop_data.Data.Controllers
             }
         }
 
-        [HttpPut("update")]
+        [HttpPut]
         public async Task<ActionResult<Author>> Update([FromBody] Author updatedAuthor)
         {
             try
