@@ -5,15 +5,13 @@ namespace InternetShop_data.Data.Services.BookServices
 {
     public interface IBookService
     {
-        Task<IEnumerable<Book>> GetAllAsync();
-        Task<Book> GetByIdAsync(int id);
-        Task<Book> CreateAsync(Book entity);
-        Task<Book> UpdateAsync(Book entity);
+        Task<IEnumerable<BookDTO>> GetAllAsync();
+        Task<BookDTO> GetByIdAsync(int id);
+        Task<BookDTO> CreateAsync(BookCreateRequest entity);
+        Task<BookDTO> UpdateAsync(BookUpdateRequest entity);
         Task<bool> DeleteAsync(int id);
-        Task<IEnumerable<Book>> GetBooksByCategory(int id);
-        Task<IEnumerable<Book>> GetBooksByAuthor(int id);
-        Task<bool> ProcessBookDTO(BookDTO book);
-        Task<IEnumerable<Author>> GetBookAuthors(int id);
-        Task<IEnumerable<Category>> GetBookCategories(int id);
+        Task<IEnumerable<BookDTO>> GetBooksByCategory(int id);
+        Task<IEnumerable<BookDTO>> GetBooksByAuthor(int id);
+        Task<BookDTO> map(Book book);
     }
 }

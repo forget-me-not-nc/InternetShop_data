@@ -7,5 +7,7 @@ namespace InternetShop_data.Data.Repositories.AuthorRepo
         Task<Author> ADOGetByIdAsync(int id);
         Task<bool> ADOUpdateAsync(Author entity);
         Task<bool> BindBookWithAuthor(int _bookId, int _authorId);
+        Task<IEnumerable<Author>> GetBookAuthors(int Id);
+
     }
 }

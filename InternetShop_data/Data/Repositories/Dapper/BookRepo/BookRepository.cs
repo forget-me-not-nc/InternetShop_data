@@ -58,54 +58,6 @@ namespace InternetShop_data.Data.Repositories.BookRepo
             {
                 ConnectionClose();
             }
-        }
-
-        public async Task<IEnumerable<Category>> GetBookCategories(int Id)
-        {
-            try
-            {
-                ConnectionOpen();
-
-                var res = _dbConnection.QueryAsync<Category>(
-                        sql: "sp_getBookCategories",
-                        param: new { cId = Id },
-                        commandType: CommandType.StoredProcedure
-                    );
-
-                return await res;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("ERROR: Failed to Get books by categories.", ex);
-            }
-            finally
-            {
-                ConnectionClose();
-            }
-        }
-
-        public async Task<IEnumerable<Author>> GetBookAuthors(int Id)
-        {
-            try
-            {
-                ConnectionOpen();
-
-                var res = _dbConnection.QueryAsync<Author>(
-                        sql: "sp_getBookAuthors",
-                        param: new { aId = Id },
-                        commandType: CommandType.StoredProcedure
-                    );
-
-                return await res;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("ERROR: Failed to Get books by categories.", ex);
-            }
-            finally
-            {
-                ConnectionClose();
-            }
-        }
+        } 
     }
 }

@@ -14,9 +14,21 @@ namespace InternetShop_data.Data.Services.BookServices.Impls
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Book> CreateAsync(Book entity)
+        public async Task<BookDTO> UpdateAsync(BookUpdateRequest entity)
         {
-            return await _unitOfWork._BookRepository.CreateAsync(entity);
+            var res = await _unitOfWork._BookRepository.UpdateAsync(
+                    new Book
+                    {
+                        Id = entity.Id,
+                        Name = entity.Name,
+                        Price = entity.Price,
+                        PublishingHouse = entity.PublishingHouse,
+                        IsDeleted = entity.IsDeleted,
+                        Count = entity.Count,
+                    }
+                );
+
+            return await map(res);
         }
 
         public async Task<bool> DeleteAsync(int id)
@@ -30,62 +42,101 @@ namespace InternetShop_data.Data.Services.BookServices.Impls
             return true;
         }
 
-        public async Task<IEnumerable<Book>> GetAllAsync()
+        public async Task<IEnumerable<BookDTO>> GetAllAsync()
         {
-            return await _unitOfWork._BookRepository.GetAllAsync();
+            return (await _unitOfWork._BookRepository.GetAllAsync())
+                .Select(async a => await map(a))
+                .Select(e => e.Result);
         }
 
-        public async Task<IEnumerable<Author>> GetBookAuthors(int id)
+        public async Task<IEnumerable<BookDTO>> GetBooksByAuthor(int id)
         {
-            return await _unitOfWork._BookRepository.GetBookAuthors(id);
+            return (await _unitOfWork._BookRepository.GetBooksByAuthor(id))
+                .Select(async a => await map(a))
+                .Select(e => e.Result);
         }
 
-        public async Task<IEnumerable<Category>> GetBookCategories(int id)
+        public async Task<IEnumerable<BookDTO>> GetBooksByCategory(int id)
         {
-            return await _unitOfWork._BookRepository.GetBookCategories(id);
+            return (await _unitOfWork._BookRepository.GetBooksByCategory(id))
+                .Select(async a => await map(a))
+                .Select(e => e.Result);       
         }
 
-        public async Task<IEnumerable<Book>> GetBooksByAuthor(int id)
+        public async Task<BookDTO> GetByIdAsync(int id)
         {
-            return await _unitOfWork._BookRepository.GetBooksByAuthor(id);
+            return await map(await _unitOfWork._BookRepository.GetByIdAsync(id));
         }
 
-        public async Task<IEnumerable<Book>> GetBooksByCategory(int id)
+        public async Task<BookDTO> map(Book book)
         {
-            return await _unitOfWork._BookRepository.GetBooksByCategory(id);
+            List<AuthorDTO> authors = (await _unitOfWork._AuthorRepository.GetBookAuthors(book.Id))
+                .Select(a => map(a)).ToList();
+
+            List<CategoryDTO> categories = (await _unitOfWork._CategoryRepository.GetBookCategories(book.Id))
+                .Select(a => map(a)).ToList();
+
+            return new BookDTO
+            { 
+                Id = book.Id,
+                Name = book.Name,
+                Price = book.Price,
+                PublishingHouse = book.PublishingHouse,
+                Authors = authors,
+                Categories = categories
+            };
         }
 
-        public async Task<Book> GetByIdAsync(int id)
+        private AuthorDTO map(Author author)
         {
-            return await _unitOfWork._BookRepository.GetByIdAsync(id);
+            return new AuthorDTO
+            {
+                FirstName = author.FirstName,
+                LastName = author.LastName,
+                MiddleName = author.MiddleName,
+                Id = author.Id,
+            };
         }
 
-        public async Task<bool> ProcessBookDTO(BookDTO book)
+        private CategoryDTO map(Category category)
+        {
+            return new CategoryDTO
+            {
+                Id = category.Id,
+                Name = category.Name,
+            };
+        }
+
+        public async Task<BookDTO> CreateAsync(BookCreateRequest entity)
         {
             try
             {
+                int bookId = 0;
+
                 using (var transactionScope = new TransactionScope())
                 {
                     int newBookId = (await _unitOfWork._BookRepository.CreateAsync(
                         new Book
                         {
-                            Count = book.Count,
+                            Count = entity.Count,
                             Id = 0,
-                            Name = book.Name,
-                            Price = book.Price,
-                            PublishingHouse = book.PublishingHouse,
-                            IsDeleted = book.IsDeleted,
+                            Name = entity.Name,
+                            Price = entity.Price,
+                            PublishingHouse = entity.PublishingHouse,
+                            IsDeleted = entity.IsDeleted,
                         })).Id;
 
-                    book.Categories.ForEach(async categoryId => 
+                    bookId = newBookId;
+
+                    entity.Categories.ForEach(async categoryId =>
                     {
-                            await _unitOfWork._CategoryRepository.BindBookWithCategory(
-                                    _bookId: newBookId,
-                                    _categoryId: categoryId
-                                    );
+                        await _unitOfWork._CategoryRepository.BindBookWithCategory(
+                                _bookId: newBookId,
+                                _categoryId: categoryId
+                                );
                     });
 
-                    book.Authors.ForEach(async authorId =>
+                    entity.Authors.ForEach(async authorId =>
                     {
                         await _unitOfWork._AuthorRepository.BindBookWithAuthor(
                                 _bookId: newBookId,
@@ -96,17 +147,12 @@ namespace InternetShop_data.Data.Services.BookServices.Impls
                     transactionScope.Complete();
                 }
 
-                return true;
+                return await map(await _unitOfWork._BookRepository.GetByIdAsync(bookId));
             }
             catch
             {
-                return false;
+                return await Task.FromResult(new BookDTO()); ;
             }
-        }
-
-        public async Task<Book> UpdateAsync(Book entity)
-        {
-            return await _unitOfWork._BookRepository.UpdateAsync(entity);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Book>> GetAllBooks()
+        public async Task<ActionResult<BookDTO>> GetAllBooks()
         {
             try
             {
@@ -32,7 +32,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Book>> GetById(int id)
+        public async Task<ActionResult<BookDTO>> GetById(int id)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Book>> Create([FromBody] Book newBook)
+        public async Task<ActionResult<BookDTO>> Create([FromBody] BookCreateRequest newBook)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<Book>> Update([FromBody] Book updatedBook)
+        public async Task<ActionResult<BookDTO>> Update([FromBody] BookUpdateRequest updatedBook)
         {
             try
             {
@@ -92,7 +92,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpGet("category/{id}")]
-        public async Task<ActionResult<IEnumerable<Book>>> getBookByCategory(int id)
+        public async Task<ActionResult<IEnumerable<BookDTO>>> getBooksByCategory(int id)
         {
             try
             {
@@ -105,56 +105,12 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpGet("author/{id}")]
-        public async Task<ActionResult<IEnumerable<Book>>> getBookByAuthor(int id)
+        public async Task<ActionResult<IEnumerable<BookDTO>>> getBooksByAuthor(int id)
         {
             try
             {
                 return Ok(await _bookService.GetBooksByAuthor(id));
 
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPost("detailedCreate")]
-        public async Task<ActionResult<bool>> DetailedCreate([FromBody] BookDTO newBook)
-        {
-            try
-            {
-                if (newBook == null) throw new ArgumentNullException("Empty body!");
-
-                if (!ModelState.IsValid) throw new InvalidOperationException("Invalid body!");
-
-                return Ok(await _bookService.ProcessBookDTO(newBook));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet("{id}/categories")]
-        public async Task<ActionResult<Book>> GetBookCategories(int id)
-        {
-            try
-            {
-                return Ok(await _bookService.GetBookCategories(id));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-
-        [HttpGet("{id}/authors")]
-        public async Task<ActionResult<Book>> GetBookAuthors(int id)
-        {
-            try
-            {
-                return Ok(await _bookService.GetBookAuthors(id));
             }
             catch (Exception ex)
             {

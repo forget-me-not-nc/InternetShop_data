@@ -6,7 +6,5 @@ namespace InternetShop_data.Data.Repositories.BookRepo
     {
         Task<IEnumerable<Book>> GetBooksByCategory(int Id);
         Task<IEnumerable<Book>> GetBooksByAuthor(int Id);
-        Task<IEnumerable<Author>> GetBookAuthors(int Id);
-        Task<IEnumerable<Category>> GetBookCategories(int Id);
     }
 }

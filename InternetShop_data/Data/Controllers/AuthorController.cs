@@ -1,4 +1,5 @@
-﻿using InternetShop_data.Data.Entities;
+﻿using InternetShop_data.Data.DTO;
+using InternetShop_data.Data.Entities;
 using InternetShop_data.Data.Services.AuthorServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +17,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Author>> GetAllAuthors()
+        public async Task<ActionResult<AuthorDTO>> GetAllAuthors()
         {
             try
             {
@@ -29,7 +30,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Author>> GetById(int id)
+        public async Task<ActionResult<AuthorDTO>> GetById(int id)
         {
             try
             {
@@ -42,7 +43,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Author>> Create([FromBody] Author newAuthor)
+        public async Task<ActionResult<AuthorDTO>> Create([FromBody] Author newAuthor)
         {
             try
             {
@@ -72,7 +73,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<Author>> Update([FromBody] Author updatedAuthor)
+        public async Task<ActionResult<AuthorDTO>> Update([FromBody] Author updatedAuthor)
         {
             try
             {
@@ -81,6 +82,19 @@ namespace InternetShop_data.Data.Controllers
                 if (!ModelState.IsValid) throw new InvalidOperationException("Invalid body!");
 
                 return Ok(await _authorService.UpdateAsync(updatedAuthor));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("book/{id}")]
+        public async Task<ActionResult<AuthorDTO>> GetBookAuthors(int id)
+        {
+            try
+            {
+                return Ok(await _authorService.GetBookAuthors(id));
             }
             catch (Exception ex)
             {

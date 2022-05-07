@@ -9,6 +9,7 @@ using InternetShop_data.Data.Services.CategoryServices;
 using InternetShop_data.Data.Services.CategoryServices.Impls;
 using InternetShop_data.Data.Settings;
 using InternetShop_data.Data.UnitOfWork;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,20 +38,31 @@ builder.Services.AddScoped<IBookService, BookServiceImpl>();
 //unit of work
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "My API",
+        Version = "v1"
+    });
+});
+
 //start app
 var app = builder.Build();
 
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "IntenetShop_data v1");
+    });
+
+}
 
 app.UseRouting();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
-
-app.MapGet("/", () => "Hello World!");
-
+app.MapControllers();
 app.UseHttpsRedirection();
 
 app.Run();

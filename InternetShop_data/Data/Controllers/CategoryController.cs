@@ -1,4 +1,5 @@
-﻿using InternetShop_data.Data.Entities;
+﻿using InternetShop_data.Data.DTO;
+using InternetShop_data.Data.Entities;
 using InternetShop_data.Data.Services.CategoryServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +17,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Category>> GetAllCategories()
+        public async Task<ActionResult<CategoryDTO>> GetAllCategories()
         {
             try
             {
@@ -29,7 +30,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetById(int id)
+        public async Task<ActionResult<CategoryDTO>> GetById(int id)
         {
             try
             {
@@ -42,7 +43,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Category>> Create([FromBody] Category newCategory)
+        public async Task<ActionResult<CategoryDTO>> Create([FromBody] Category newCategory)
         {
             try
             {
@@ -72,7 +73,7 @@ namespace InternetShop_data.Data.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<Category>> Update([FromBody] Category updatedCategory)
+        public async Task<ActionResult<CategoryDTO>> Update([FromBody] Category updatedCategory)
         {
             try
             {
@@ -81,6 +82,19 @@ namespace InternetShop_data.Data.Controllers
                 if (!ModelState.IsValid) throw new InvalidOperationException("Invalid body!");
 
                 return Ok(await _categoryService.UpdateAsync(updatedCategory));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("book/{id}")]
+        public async Task<ActionResult<CategoryDTO>> GetBookCategories(int id)
+        {
+            try
+            {
+                return Ok(await _categoryService.GetBookCategories(id));
             }
             catch (Exception ex)
             {
